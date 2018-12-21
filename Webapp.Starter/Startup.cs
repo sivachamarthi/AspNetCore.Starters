@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Webapp.Starter.Data;
+using Webapp.Starter.Data.Repository;
 
 namespace Webapp.Starter
 {
@@ -36,8 +37,10 @@ namespace Webapp.Starter
             services.AddDbContext<StarterContext>(opt => opt.UseInMemoryDatabase("WebStarter"));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-        }
 
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        }
+        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {

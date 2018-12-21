@@ -4,15 +4,23 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Webapp.Starter.Data.Entities;
+using Webapp.Starter.Data.Repository;
 using Webapp.Starter.Models;
 
 namespace Webapp.Starter.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IGenericRepository<Article> articleRepository;
+        public HomeController(IGenericRepository<Article> _articleRepository)
+        {
+            articleRepository = _articleRepository;
+        }
         public IActionResult Index()
         {
-            return View();
+            var articles = articleRepository.Get(filter: null, orderBy: x => x.OrderByDescending(a => a.ArticleId), includeProperties: "");
+            return View(articles);
         }
 
         public IActionResult About()
